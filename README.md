@@ -40,7 +40,7 @@ The compiled draft can be found here:
 👉 [Compiled Article Draft](./compiled-article.md)  
 
 Once finalized, it will be published on Hackster:  
-👉 [Hackster Article Link](#TO_BE_INSERTED_HACKSTER_ARTICLE_LINK_HERE)
+👉 [Hackster Article Link](https://www.hackster.io/danuw/smart-river-guardian-48cadc)
 
 ---
 
@@ -70,7 +70,7 @@ Once finalized, it will be published on Hackster:
 
 ## 🔗 Links
 - Hackathon Page: [https://www.hackster.io/contests/earthguardians/](#)  
-- Hackster Article (coming soon): [INSERT_HACKSTER_ARTICLE_LINK_HERE](#)  
+- Hackster Article : [Smart River Guardian](https://www.hackster.io/danuw/smart-river-guardian-48cadc)  
 
 ---
 
