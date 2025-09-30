@@ -63,8 +63,8 @@ Untreated overflows and diffuse pollution events are often invisible. Recreation
   - TVS diodes, reverse-polarity protection, ESD on sensor inputs
 
 ### 4.2 Comms (LoRa)
-- **Option A (LoRaWAN):** *Seeed Grove Wio-E5* module (UART AT command set) → easiest WAN uplink to TTN/Helium  
-- **Option B (Raw LoRa / Meshtastic-ready):** SX1262 module (e.g., Ebyte E22-900M30S for EU868) on SPI → flexible firmware (RadioLib), P2P links
+- **Option A (LoRaWAN):** *SX1262 LoRa module* (SPI interface) → flexible firmware with RadioLib  
+- **Option B (Alternative):** *Seeed Grove Wio-E5* module (UART AT command set) → simpler integration but less flexible
 - **Antenna:** External 868 MHz whip with SMA + bulkhead to enclosure
 
 ### 4.3 Power & Solar
@@ -131,11 +131,11 @@ Daily energy ≈ 20–80 mWh (node-only, conservative). A **3–6W panel** with 
    - Convert EC→TDS using factor (site-tuned, start at 0.5–0.7)  
    - Compute **status category** (Safe/Careful/Avoid) and drive LED (short, low-brightness burst)  
 3. **Uplink**:  
-   - **LoRaWAN (Wio-E5)**: send compact payload (see schema below)  
+   - **LoRaWAN (SX1262)**: send compact payload (see schema below)  
    - **or Raw LoRa**: send ASCII/CBOR/Proto packet to a nearby bridge  
 4. **Sleep**: turn off sensor rail & LED, enter deep sleep.
 
-**Libraries:** OneWire/DS18B20, Adafruit_NeoPixel, simple median filter, TinyCRC, Wio-E5 or RadioLib (depending on LoRa option).
+**Libraries:** OneWire/DS18B20, Adafruit_NeoPixel, simple median filter, TinyCRC, RadioLib for SX1262 (or Wio-E5 library if using alternative).
 
 ---
 
@@ -174,7 +174,7 @@ Daily energy ≈ 20–80 mWh (node-only, conservative). A **3–6W panel** with 
 > Voucher: **$300 PCB + $200 SMT** (~2 PCBA prototypes; shipping/customs not covered).
 
 **Board contents**
-- XIAO footprint, Wio-E5/SX1262 footprint (or header), battery gauge divider  
+- XIAO footprint, SX1262 LoRa footprint (or header for Wio-E5 alternative), battery gauge divider  
 - 5V boost + 3.3V LDO/buck, solar charger footprint, power-gating MOSFETs  
 - Headers for DS18B20, turbidity, pH, EC (Grove/JST), BNC pads or pigtails  
 - ESD/TVS on external lines; test pads/UART SWD pads
@@ -186,7 +186,7 @@ Daily energy ≈ 20–80 mWh (node-only, conservative). A **3–6W panel** with 
 ---
 
 ## 12) Project Timeline (minimum viable → fieldable)
-1. **Week 1–2**: Breadboard bring-up (XIAO + sensors + Wio-E5), basic readings, LED status, serial logs.  
+1. **Week 1–2**: Breadboard bring-up (XIAO + sensors + SX1262), basic readings, LED status, serial logs.  
 2. **Week 3**: LoRa uplink (join & send), payload packing, gateway/dashboard mock.  
 3. **Week 4**: Carrier PCB design & DFM, submit to NextPCB.  
 4. **Week 5**: Enclosure build, waterproofing, dry runs; calibration rig prep.  
@@ -212,7 +212,7 @@ Daily energy ≈ 20–80 mWh (node-only, conservative). A **3–6W panel** with 
 
 ## 15) Bill of Materials (indicative; customize per supplier)
 - Seeed **XIAO nRF52840** (MCU)  
-- **LoRa**: Seeed **Grove Wio-E5** (LoRaWAN via UART) *or* SX1262 (E22-900M30S) + SPI  
+- **LoRa**: Primary: SX1262 LoRa module (E22-900M30S) on SPI, or alternative: Seeed **Grove Wio-E5** (LoRaWAN via UART)  
 - **Solar panel**: 6V, 3–6W (poly/mono)  
 - **Solar Li-ion charger**: solar-aware LiPo charger (CN3065/BQ24074-class)  
 - **Battery**: 3.7V Li-ion/LiPo 2000–5000 mAh with JST-PH  
@@ -235,7 +235,8 @@ Daily energy ≈ 20–80 mWh (node-only, conservative). A **3–6W panel** with 
 - **pH** → A1 (analog)  
 - **EC** → A2 (analog)  
 - **NeoPixel** → D6 (via 74AHCT125 to 5V rail)  
-- **Wio-E5** → UART (D0/D1 or Serial1), plus 3.3V and EN pin if used  
+- **SX1262 LoRa** → SPI (MOSI/MISO/SCK/CS), plus 3.3V, GND, and DIO pins
+- **Alternative Wio-E5** → UART (D0/D1 or Serial1), plus 3.3V and EN pin if used  
 - **Battery sense** → A3 (through divider, e.g., 100k/330k)  
 - **Sensor Power Enable** → D9 (to P-MOSFET gate driver)
 
